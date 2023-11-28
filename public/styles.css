@@ -1,0 +1,155 @@
+html * {
+  font-family: "Dekko", cursive;
+  max-width: 800px;
+  margin: auto;
+}
+
+html {
+  background: #bb946f;
+  background: linear-gradient(135deg, #bb946f 0%, #966647 100%);
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  font-size: 50px;
+  text-shadow: 5px 5px 0px rgb(140 90 60);
+  margin-bottom: 0px;
+}
+
+h2 {
+  margin-top: 0px;
+  margin-bottom: 4px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.cookie-wells {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+  justify-content: end;
+}
+
+.cookie-well {
+  text-align: center;
+  padding: 20px;
+  padding-right: 30px;
+}
+
+.cookie-well-label {
+  font-weight: bold;
+}
+
+.cookie-well-price {
+  font-weight: bold;
+  background: #ffffff;
+  border-radius: 10px;
+  margin: 0px 30px 0px 30px;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  margin-top: 10px;
+}
+
+.cookie-well-price.trending-up {
+  color: #137a2b;
+}
+
+.cookie-well-price.trending-down {
+  color: #952121;
+}
+
+.cookie-well > img {
+  width: 90px;
+  -webkit-filter: drop-shadow(5px 5px 0px rgb(140 90 60));
+  filter: drop-shadow(5px 5px 0px rgb(140 90 60));
+}
+
+.cookie-charts {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+  width: 300px;
+  align-items: center;
+  justify-content: center;
+  margin: 0px auto;
+}
+
+.cookie-chart {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 6px 6px 0px #8c5a3c;
+}
+
+.cookie-buttons {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+}
+
+.button-container {
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  justify-content: start;
+}
+
+button {
+  transition: all 0.1s ease;
+  font-weight: bold;
+}
+
+.purchase-button:hover {
+  margin: 15px 20px 10px 25px;
+  box-shadow: 0px 0px 0px #cf3d0f;
+  cursor: pointer;
+}
+
+.sell-button:hover {
+  margin: 15px 20px 10px 25px;
+  box-shadow: 0px 0px 0px #2c4f7a;
+  cursor: pointer;
+}
+
+.purchase-button {
+  height: 50px;
+  border: 0px;
+  border-radius: 10px;
+  margin: 10px 20px;
+  background: #ff5e2b;
+  box-shadow: 5px 5px 0px #cf3d0f;
+  width: 120px;
+  font-size: 14px;
+  color: white;
+}
+
+.sell-button {
+  height: 50px;
+  border: 0px;
+  border-radius: 10px;
+  margin: 10px 20px;
+  background: #4c79af;
+  box-shadow: 5px 5px 0px #2c4f7a;
+  width: 120px;
+  font-size: 14px;
+  color: white;
+}
+
+.material-icons {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  transform: translateY(3px) scale(1.1);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.account-user-name {
+  padding-right: 10px;
+}

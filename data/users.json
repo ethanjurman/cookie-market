@@ -1,0 +1,11 @@
+{
+  "guest": {
+    "accountName": "guest",
+    "monies": 50.0,
+    "cookies": {
+      "chocolateChipCookie": 10,
+      "sugarCookie": 9,
+      "sandwichCookie": 8
+    }
+  }
+}
