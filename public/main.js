@@ -121,7 +121,7 @@ async function buildCookieButtons() {
   buildCookieButtons();
 })();
 
-// setInterval(async () => {
-//   await fillCookieWells()
-//   buildCookieChart(cookieKeys)
-// }, 10000)
+setInterval(async () => {
+  await fillCookieWells()
+  buildCookieChart(cookieKeys)
+}, 10000)

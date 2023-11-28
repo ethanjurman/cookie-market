@@ -1,12 +1,15 @@
 html * {
   font-family: "Dekko", cursive;
-  max-width: 800px;
-  margin: auto;
 }
 
 html {
   background: #bb946f;
   background: linear-gradient(135deg, #bb946f 0%, #966647 100%);
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
 }
 
 h1 {
@@ -15,6 +18,7 @@ h1 {
   font-size: 50px;
   text-shadow: 5px 5px 0px rgb(140 90 60);
   margin-bottom: 0px;
+  margin-top: 10px;
 }
 
 h2 {
@@ -148,6 +152,13 @@ button {
 .header {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
+}
+
+.account {
+  display: grid;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
 }
 
 .account-user-name {
