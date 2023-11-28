@@ -2,19 +2,19 @@
   "chocolateChipCookie": {
     "label": "Chocolate Chip Cookie",
     "imgSrc": "images/chocolateChipCookie.png",
-    "price": 90.74037989913205,
-    "previousPrice": 88.59235903336547
+    "price": 85.95606033204248,
+    "previousPrice": 84.087149866174
   },
   "sugarCookie": {
     "label": "Sugar Cookie",
     "imgSrc": "images/sugarCookie.png",
-    "price": 214.74352257468,
-    "previousPrice": 216.7669489515897
+    "price": 222.21129499154273,
+    "previousPrice": 217.65484078715852
   },
   "sandwichCookie": {
     "label": "Sandwich Cookie",
     "imgSrc": "images/sandwichCookie.png",
-    "price": 88.94818251595045,
-    "previousPrice": 87.20870399778191
+    "price": 80.64767116358797,
+    "previousPrice": 84.06953082669216
   }
 }
