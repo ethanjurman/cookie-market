@@ -108,13 +108,25 @@ button {
 }
 
 .purchase-button:hover {
-  margin: 15px 20px 10px 25px;
-  box-shadow: 0px 0px 0px #cf3d0f;
+  margin: 12.5px 18.5px 7.5px 23.5px;
+  box-shadow: 2.5px 2.5px 0px #cf3d0f;
   cursor: pointer;
 }
 
 .sell-button:hover {
-  margin: 15px 20px 10px 25px;
+  margin: 12.5px 18.5px 7.5px 23.5px;
+  box-shadow: 2.5px 2.5px 0px #2c4f7a;
+  cursor: pointer;
+}
+
+.purchase-button:active {
+  margin: 15px 15px 5px 25px;
+  box-shadow: 0px 0px 0px #cf3d0f;
+  cursor: pointer;
+}
+
+.sell-button:active {
+  margin: 15px 15px 5px 25px;
   box-shadow: 0px 0px 0px #2c4f7a;
   cursor: pointer;
 }
@@ -123,7 +135,7 @@ button {
   height: 50px;
   border: 0px;
   border-radius: 10px;
-  margin: 10px 20px;
+  margin: 10px 20px 10px 20px;
   background: #ff5e2b;
   box-shadow: 5px 5px 0px #cf3d0f;
   width: 120px;
@@ -135,7 +147,7 @@ button {
   height: 50px;
   border: 0px;
   border-radius: 10px;
-  margin: 10px 20px;
+  margin: 10px 20px 10px 20px;
   background: #4c79af;
   box-shadow: 5px 5px 0px #2c4f7a;
   width: 120px;

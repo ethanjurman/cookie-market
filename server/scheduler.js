@@ -7,7 +7,7 @@ async function updatePrices() {
     const trendUp = cookieData[key].price > cookieData[key].previousPrice;
     const oldPrice = cookieData[key].price;
     const newPrice = oldPrice + (Math.random() * 10) + (trendUp ? - 6 : - 4); // if it's trending up, have a higher chance to decrease
-    updated[key].price = newPrice;
+    updated[key].price = Math.round(newPrice * 100) / 100;
     updated[key].previousPrice = oldPrice;
     return updated;
   }, cookieData)
