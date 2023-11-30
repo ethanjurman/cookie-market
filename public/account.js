@@ -42,7 +42,7 @@ loginButton.onclick = async () => {
   const username = document.getElementById('login-user-name').value;
   const password = document.getElementById('login-password').value;
   const response = await postData('/login', { username, password });
-  token = response.token;
+  localStorage.setItem('token', response.token);
 }
 
 const testButton = document.createElement('button');
@@ -51,7 +51,7 @@ testButton.id = 'test-button';
 testButton.onclick = () => {
   fetch('/getUserInfo', {
     headers: {
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
   })
 }
@@ -61,6 +61,9 @@ getAccountElement().appendChild(accountUserNameElement);
 
 getAccountElement().appendChild(loginUserNameInput);
 getAccountElement().appendChild(loginPasswordInput);
-getAccountElement().appendChild(loginButton);
-getAccountElement().appendChild(signUpButton);
+const loginButtonSection = document.createElement('div');
+loginButtonSection.classList.add('login-button-section');
+loginButtonSection.appendChild(loginButton);
+loginButtonSection.appendChild(signUpButton);
+getAccountElement().appendChild(loginButtonSection);
 getAccountElement().appendChild(testButton);

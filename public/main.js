@@ -12,7 +12,68 @@ function getCookieButtons() {
   return document.getElementsByClassName('cookie-buttons')[0];
 }
 
-function buildCookieWell(data) {
+async function postDataWithToken(url = "", data = {}) {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      "Content-Type": "application/json"
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: JSON.stringify(data),
+  });
+  return response.json();
+}
+
+function getUserCookieDataElement(cookieType, price) {
+  const userData = JSON.parse(localStorage.getItem('user') || "null")
+  if (!userData) {
+    return document.createElement('div');
+  };
+  const jarSVG = document.createElement('img');
+  jarSVG.classList.add('jar');
+  if (userData.cookies[cookieType] === 0) {
+    // no cookies
+    jarSVG.src = './images/Jar1.png'
+  }
+  if (userData.cookies[cookieType] > 0) {
+    // some cookies
+    jarSVG.src = './images/Jar2.png'
+  }
+  if (userData.cookies[cookieType] > 3) {
+    // more cookies
+    jarSVG.src = './images/Jar3.png'
+  }
+  if (userData.cookies[cookieType] > 8) {
+    // lots of cookies
+    jarSVG.src = './images/Jar4.png'
+  }
+  const numberOfCookies = document.createElement('span');
+  numberOfCookies.innerText = userData.cookies[cookieType];
+  const jarSection = document.createElement('div');
+  jarSection.classList.add('jar-section');
+  jarSection.appendChild(jarSVG);
+  jarSection.appendChild(numberOfCookies);
+
+  const crumbImg = document.createElement('img');
+  crumbImg.classList.add('crumb');
+  crumbImg.src = './images/coin.png';
+  const crumbValue = document.createElement('span');
+  crumbValue.innerText = Math.round(userData.cookies[cookieType] * price * 100) / 100;
+
+  const crumbValueSection = document.createElement('div');
+  crumbValueSection.classList.add('crumb-value-section');
+  crumbValueSection.appendChild(crumbImg);
+  crumbValueSection.appendChild(crumbValue);
+
+  const infoSection = document.createElement('div');
+  infoSection.appendChild(jarSection);
+  infoSection.appendChild(crumbValueSection);
+  return infoSection;
+}
+
+function buildCookieWell(data, cookieType) {
   const { label, imgSrc, price, previousPrice } = data;
   const cookieWell = document.createElement("div");
   cookieWell.className = "cookie-well";
@@ -30,10 +91,13 @@ function buildCookieWell(data) {
   priceElement.classList.add(previousPrice < price ? 'trending-up' : 'trending-down');
   priceElement.innerHTML = `<span>${Math.round(price * 100) / 100}</span> ${trendIcon}`;
 
-
+  const infoSection = document.createElement("div");
+  infoSection.classList.add('info-section');
+  infoSection.appendChild(priceElement);
+  infoSection.appendChild(getUserCookieDataElement(cookieType, price));
   cookieWell.appendChild(labelElement);
+  cookieWell.appendChild(infoSection);
   cookieWell.appendChild(imgElement);
-  cookieWell.appendChild(priceElement);
   getCookieWells().appendChild(cookieWell);
 }
 
@@ -42,7 +106,7 @@ async function fillCookieWells() {
   const cookieData = await response.json()
   getCookieWells().innerHTML = "";
   Object.keys(cookieData).forEach(cookieKey => {
-    buildCookieWell(cookieData[cookieKey]);
+    buildCookieWell(cookieData[cookieKey], cookieKey);
   });
   cookieKeys = Object.keys(cookieData);
   return cookieKeys;
@@ -105,10 +169,24 @@ async function buildCookieButtons() {
     purchaseButton.classList.add('purchase-button');
     purchaseButton.classList.add(cookieType);
     purchaseButton.innerText = "BUY";
+    purchaseButton.onclick = async () => {
+      const response = await postDataWithToken('/buyCookie', {
+        cookieType
+      });
+      localStorage.setItem('user', JSON.stringify(response.user));
+      fillCookieWells();
+    }
     const sellButton = document.createElement("button");
     sellButton.classList.add('sell-button');
     sellButton.classList.add(cookieType);
     sellButton.innerText = "SELL";
+    sellButton.onclick = async () => {
+      const response = await postDataWithToken('/sellCookie', {
+        cookieType
+      });
+      localStorage.setItem('user', JSON.stringify(response.user));
+      fillCookieWells();
+    }
     buttonContainer.appendChild(purchaseButton);
     buttonContainer.appendChild(sellButton);
     getCookieButtons().appendChild(buttonContainer);
@@ -123,5 +201,5 @@ async function buildCookieButtons() {
 
 setInterval(async () => {
   await fillCookieWells()
-  buildCookieChart(cookieKeys)
+  buildCookieChart(cookieKeys);
 }, 10000)

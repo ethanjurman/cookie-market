@@ -41,12 +41,18 @@ h2 {
 
 .cookie-well {
   text-align: center;
-  padding: 20px;
-  padding-right: 30px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "header header"
+    "main sidebar"
+    "main sidebar"
+    "main sidebar";
 }
 
 .cookie-well-label {
   font-weight: bold;
+  grid-area: header;
 }
 
 .cookie-well-price {
@@ -56,6 +62,7 @@ h2 {
   margin: 0px 30px 0px 30px;
   box-shadow: 3px 3px 0px #8c5a3c;
   margin-top: 10px;
+  grid-area: sidebar;
 }
 
 .cookie-well-price.trending-up {
@@ -70,6 +77,7 @@ h2 {
   width: 90px;
   -webkit-filter: drop-shadow(5px 5px 0px rgb(140 90 60));
   filter: drop-shadow(5px 5px 0px rgb(140 90 60));
+  grid-area: main;
 }
 
 .cookie-charts {
@@ -108,25 +116,25 @@ button {
 }
 
 .purchase-button:hover {
-  margin: 12.5px 18.5px 7.5px 23.5px;
+  margin: 12.5px 8.5px 7.5px 13.5px;
   box-shadow: 2.5px 2.5px 0px #cf3d0f;
   cursor: pointer;
 }
 
 .sell-button:hover {
-  margin: 12.5px 18.5px 7.5px 23.5px;
+  margin: 12.5px 8.5px 7.5px 13.5px;
   box-shadow: 2.5px 2.5px 0px #2c4f7a;
   cursor: pointer;
 }
 
 .purchase-button:active {
-  margin: 15px 15px 5px 25px;
+  margin: 15px 5px 5px 15px;
   box-shadow: 0px 0px 0px #cf3d0f;
   cursor: pointer;
 }
 
 .sell-button:active {
-  margin: 15px 15px 5px 25px;
+  margin: 15px 5px 5px 15px;
   box-shadow: 0px 0px 0px #2c4f7a;
   cursor: pointer;
 }
@@ -135,7 +143,7 @@ button {
   height: 50px;
   border: 0px;
   border-radius: 10px;
-  margin: 10px 20px 10px 20px;
+  margin: 10px;
   background: #ff5e2b;
   box-shadow: 5px 5px 0px #cf3d0f;
   width: 120px;
@@ -147,7 +155,7 @@ button {
   height: 50px;
   border: 0px;
   border-radius: 10px;
-  margin: 10px 20px 10px 20px;
+  margin: 10px;
   background: #4c79af;
   box-shadow: 5px 5px 0px #2c4f7a;
   width: 120px;
@@ -175,4 +183,34 @@ button {
 
 .account-user-name {
   padding-right: 10px;
+}
+
+.login-button-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.login-button-section > button {
+  border: 0px;
+  border-radius: 10px;
+  margin: 2px;
+  background: #ffffff;
+}
+
+.crumb-value-section {
+  grid-area: sidebar;
+}
+
+.crumb {
+  width: 12px;
+  padding-right: 4px;
+}
+
+.jar-section {
+  grid-area: sidebar;
+}
+
+.jar {
+  width: 12px;
+  padding-right: 4px;
 }
