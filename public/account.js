@@ -4,6 +4,10 @@ function getAccountElement() {
   return document.getElementsByClassName('account')[0];
 }
 
+function getBuySellButtons() {
+  return document.getElementsByClassName('cookie-buttons')[0];
+}
+
 async function postData(url = "", data = {}) {
   const response = await fetch(url, {
     method: "POST",
@@ -52,6 +56,7 @@ function buildAccountElement() {
     window.location.reload();
   }
   getAccountElement().appendChild(signOutButton);
+  buildCookieButtons();
 }
 
 function buildSignInLoginElement() {
@@ -101,10 +106,63 @@ function buildSignInLoginElement() {
   loginButtonSection.appendChild(loginButton);
   loginButtonSection.appendChild(signUpButton);
   getAccountElement().appendChild(loginButtonSection);
+  buildCookieButtons(true);
 }
 
-if (!localStorage.getItem('user')) {
-  buildSignInLoginElement();
-} else {
-  buildAccountElement();
+async function buildCookieButtons(disabled = false) {
+  getBuySellButtons().innerHTML = '';
+  cookieKeys.forEach(cookieType => {
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+    const purchaseButton = document.createElement("button");
+    purchaseButton.classList.add('purchase-button');
+    purchaseButton.classList.add(cookieType);
+    purchaseButton.innerText = "BUY";
+    if (disabled) {
+      purchaseButton.classList.add('disabled-button');
+    }
+    if (!disabled) {
+      purchaseButton.onclick = async () => {
+        const response = await postDataWithToken('/buyCookie', {
+          cookieType
+        });
+        localStorage.setItem('user', JSON.stringify(response.user));
+        fillCookieWells();
+        buildAccountElement();
+      }
+    }
+    const sellButton = document.createElement("button");
+    sellButton.classList.add('sell-button');
+    sellButton.classList.add(cookieType);
+    sellButton.innerText = "SELL";
+    if (disabled) {
+      sellButton.classList.add('disabled-button');
+    }
+    if (!disabled) {
+      sellButton.onclick = async () => {
+        const response = await postDataWithToken('/sellCookie', {
+          cookieType
+        });
+        localStorage.setItem('user', JSON.stringify(response.user));
+        fillCookieWells();
+        buildAccountElement();
+      }
+    }
+    buttonContainer.appendChild(purchaseButton);
+    buttonContainer.appendChild(sellButton);
+    getCookieButtons().appendChild(buttonContainer);
+  });
 }
+
+
+let intervalId = setInterval(() => {
+  if (cookieKeys.length > 0) {
+    clearInterval(intervalId);
+    if (!localStorage.getItem('user')) {
+      buildSignInLoginElement();
+    } else {
+      buildAccountElement();
+    }
+  }
+}, 200)
+

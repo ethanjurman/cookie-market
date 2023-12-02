@@ -1,5 +1,3 @@
-let cookieKeys = [];
-
 function getCookieWells() {
   return document.getElementsByClassName('cookie-wells')[0];
 }
@@ -109,19 +107,17 @@ async function fillCookieWells() {
   Object.keys(cookieData).forEach(cookieKey => {
     buildCookieWell(cookieData[cookieKey], cookieKey);
   });
-  cookieKeys = Object.keys(cookieData);
-  return cookieKeys;
 }
 
 async function buildCookieChart(cookieTypes) {
-  const cookieHistoryResponse = await fetch('/cookieHistory');
+  const cookieHistoryResponse = await fetch('/cookieHistory?count=50');
   const cookieHistory = await cookieHistoryResponse.json();
   getCookieCharts().innerHTML = "";
 
   cookieTypes.forEach(cookieType => {
     const prices = [];
     const dateKeys = [];
-    Object.entries(cookieHistory).slice(0, 100).forEach(([dateKey, cookieData]) => {
+    Object.entries(cookieHistory).forEach(([dateKey, cookieData]) => {
       prices.unshift(cookieData[cookieType].price);
       dateKeys.unshift(Number(dateKey));
     });
@@ -162,44 +158,9 @@ async function buildCookieChart(cookieTypes) {
   })
 }
 
-async function buildCookieButtons() {
-  cookieKeys.forEach(cookieType => {
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-    const purchaseButton = document.createElement("button");
-    purchaseButton.classList.add('purchase-button');
-    purchaseButton.classList.add(cookieType);
-    purchaseButton.innerText = "BUY";
-    purchaseButton.onclick = async () => {
-      const response = await postDataWithToken('/buyCookie', {
-        cookieType
-      });
-      localStorage.setItem('user', JSON.stringify(response.user));
-      fillCookieWells();
-      buildAccountElement();
-    }
-    const sellButton = document.createElement("button");
-    sellButton.classList.add('sell-button');
-    sellButton.classList.add(cookieType);
-    sellButton.innerText = "SELL";
-    sellButton.onclick = async () => {
-      const response = await postDataWithToken('/sellCookie', {
-        cookieType
-      });
-      localStorage.setItem('user', JSON.stringify(response.user));
-      fillCookieWells();
-      buildAccountElement();
-    }
-    buttonContainer.appendChild(purchaseButton);
-    buttonContainer.appendChild(sellButton);
-    getCookieButtons().appendChild(buttonContainer);
-  });
-}
-
 (async () => {
   await fillCookieWells();
   buildCookieChart(cookieKeys);
-  buildCookieButtons();
 })();
 
 setInterval(async () => {

@@ -19,7 +19,21 @@ const readCookieData = () => {
 
 const writeCookieData = async newData => {
   const oldCookieData = await readCookieHistoryData()
-  await writeCookieHistoryData({ [new Date().getTime()]: newData, ...oldCookieData });
+  // filter out cookie data that is older than 24 hours
+  const cookieData = Object.keys(oldCookieData).reduce((data, timestamp) => {
+    if (Number(oldCookieData[timestamp]) < 24 * 60 * 60 * 1000) {
+      return data; // older than 24 hours - skip
+    }
+    data[timestamp] = oldCookieData[timestamp];
+    return data;
+  }, {})
+
+  await writeCookieHistoryData({
+    // new data should only be price data
+    [new Date().getTime()]: Object.keys(newData).reduce((dataToWrite, cookieKey) => ({ ...dataToWrite, [cookieKey]: { price: newData[cookieKey].price } }), {}),
+    // also include old cookie data
+    ...cookieData
+  });
   return writeFile('./data/cookie.json', newData);
 }
 

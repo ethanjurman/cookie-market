@@ -26,16 +26,32 @@ app.use(express.json())
 
 app.get('/cookieData', async (req, res) => {
   const cookieData = await readCookieData();
-  res.send(cookieData);
+  res.json(cookieData);
 })
 
 app.get('/cookieHistory', async (req, res) => {
   const cookieHistoryData = await readCookieHistoryData();
-  res.send(cookieHistoryData)
+  const count = Number(req.query.count) || 100;
+  const skip = Number(req.query.skip) || 1;
+
+  let itemCount = 0;
+  const slicedCookieHistoryData = Object.keys(cookieHistoryData).reduce((cookieData, timestamp, index) => {
+    if (itemCount >= count) {
+      return cookieData;
+    }
+    if (index % skip !== 0) {
+      return cookieData;
+    }
+    cookieData[timestamp] = cookieHistoryData[timestamp];
+    itemCount += 1;
+    return cookieData;
+  }, {})
+
+  res.json(slicedCookieHistoryData)
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`listening on port ${port}`);
 })
 
 function getSecret() {
@@ -105,7 +121,7 @@ const authenticateToken = async (req, res, next) => {
 };
 
 app.get('/getUserInfo', authenticateToken, (req, res) => {
-  res.send(req.user);
+  res.json(req.user);
 });
 
 app.post('/buyCookie', authenticateToken, async (req, res) => {
@@ -115,7 +131,7 @@ app.post('/buyCookie', authenticateToken, async (req, res) => {
   const user = users.find(u => u.username === username);
   const cookieData = await readCookieData();
   if (!cookieData[cookieType] || !cookieData[cookieType].price) {
-    return res.send({ status: 'error', message: 'Invalid cookie', cookieType: cookieType });
+    return res.json({ status: 'error', message: 'Invalid cookie', cookieType: cookieType });
   }
   const cookiePrice = cookieData[cookieType].price;
   const newCrumbCount = Math.round((user.crumbs - cookiePrice) * 100) / 100;
@@ -130,9 +146,9 @@ app.post('/buyCookie', authenticateToken, async (req, res) => {
       }
       return user;
     }))
-    res.send({ status: 'success', message: 'purchased cookie!', user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] + 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
+    res.json({ status: 'success', message: 'purchased cookie!', user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] + 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
   } else {
-    res.send({ status: 'error', message: 'not enough crumbs', user, cookie: cookieData[req.cookieType] })
+    res.json({ status: 'error', message: 'not enough crumbs', user, cookie: cookieData[req.cookieType] })
   }
 });
 
@@ -143,7 +159,7 @@ app.post('/sellCookie', authenticateToken, async (req, res) => {
   const user = users.find(u => u.username === username);
   const cookieData = await readCookieData();
   if (!cookieData[cookieType] || !cookieData[cookieType].price) {
-    return res.send({ status: 'error', message: 'Invalid cookie', cookieType: cookieType });
+    return res.json({ status: 'error', message: 'Invalid cookie', cookieType: cookieType });
   }
   const cookiePrice = cookieData[cookieType].price;
   const newCrumbCount = Math.round((user.crumbs + cookiePrice) * 100) / 100;
@@ -158,8 +174,8 @@ app.post('/sellCookie', authenticateToken, async (req, res) => {
       };
       return user;
     }));
-    res.send({ status: 'success', message: 'sell cookie!', cookieType, user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] - 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
+    res.json({ status: 'success', message: 'sell cookie!', cookieType, user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] - 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
   } else {
-    res.send({ status: 'error', message: 'not enough cookies', cookieType, user, cookie: cookieData[req.cookieType] })
+    res.json({ status: 'error', message: 'not enough cookies', cookieType, user, cookie: cookieData[req.cookieType] })
   }
 });

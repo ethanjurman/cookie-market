@@ -80,6 +80,7 @@ h2 {
   width: 90px;
   -webkit-filter: drop-shadow(5px 5px 0px rgb(140 90 60));
   filter: drop-shadow(5px 5px 0px rgb(140 90 60));
+  align-self: center;
   grid-area: main;
 }
 
@@ -198,6 +199,16 @@ button {
   border-radius: 10px;
   margin: 2px;
   background: #ffffff;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  cursor: pointer;
+}
+
+.login-button-section > button:hover {
+  border: 0px;
+  border-radius: 10px;
+  margin: 4px 0px 0px 4px;
+  background: #ffffff;
+  box-shadow: 1px 1px 0px #8c5a3c;
 }
 
 .sign-out {
@@ -206,6 +217,17 @@ button {
   margin: 2px;
   background: #ffffff;
   min-width: 100px;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  cursor: pointer;
+}
+
+.sign-out:hover {
+  border: 0px;
+  border-radius: 10px;
+  margin: 4px 0px 0px 4px;
+  background: #ffffff;
+  min-width: 100px;
+  box-shadow: 1px 1px 0px #8c5a3c;
 }
 
 .crumb-value-section {
@@ -236,4 +258,18 @@ button {
 .jar {
   width: 12px;
   padding-right: 4px;
+}
+
+.disabled-button {
+  background: #808080;
+  box-shadow: 2px 2px 0px #666666;
+  margin: 10px;
+  cursor: initial;
+}
+
+.disabled-button:hover {
+  background: #808080;
+  box-shadow: 2px 2px 0px #666666;
+  margin: 10px;
+  cursor: initial;
 }

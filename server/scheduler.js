@@ -26,3 +26,4 @@ setInterval(
   updatePrices,
   30 * 1000 /* every 30 seconds */
 )
+console.log(`schedule running every 30 seconds`);
