@@ -51,15 +51,18 @@ app.post('/signup', async (req, res) => {
 
     const users = await readUsersData();
     users.push({
-      username, password: hashedPassword, crumbs: 10000, cookies: {
+      username, password: hashedPassword, crumbs: 2500, cookies: {
         chocolateChipCookie: 0,
         sugarCookie: 0,
         sandwichCookie: 0,
       }
     });
     await writeUsersData(users);
+    const user = users.find(u => u.username === username);
+    const { __password, ...userData } = user; // take all data except password
+    const token = jwt.sign({ ...userData }, await getSecret(), { expiresIn: '24h' });
 
-    res.status(201).send('User created');
+    res.json({ token, user: userData });
   } catch (error) {
     res.status(500).send('Error during signup');
   }
@@ -75,7 +78,7 @@ app.post('/login', async (req, res) => {
     if (user && await bcrypt.compare(password, user.password)) {
       const { __password, ...userData } = user; // take all data except password
       const token = jwt.sign({ ...userData }, await getSecret(), { expiresIn: '24h' });
-      res.json({ token, ...userData });
+      res.json({ token, user: userData });
     } else {
       res.status(401).send('Invalid credentials');
     }
@@ -127,7 +130,7 @@ app.post('/buyCookie', authenticateToken, async (req, res) => {
       }
       return user;
     }))
-    res.send({ status: 'success', message: 'purchased cookie!', user: { ...user, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
+    res.send({ status: 'success', message: 'purchased cookie!', user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] + 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
   } else {
     res.send({ status: 'error', message: 'not enough crumbs', user, cookie: cookieData[req.cookieType] })
   }
@@ -155,8 +158,8 @@ app.post('/sellCookie', authenticateToken, async (req, res) => {
       };
       return user;
     }));
-    res.send({ status: 'success', message: 'purchased cookie!', user: { ...user, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
+    res.send({ status: 'success', message: 'sell cookie!', cookieType, user: { ...user, cookies: { ...user.cookies, [cookieType]: user.cookies[cookieType] - 1 }, crumbs: newCrumbCount }, cookie: cookieData[req.cookieType] });
   } else {
-    res.send({ status: 'error', message: 'not enough cookies', user, cookie: cookieData[req.cookieType] })
+    res.send({ status: 'error', message: 'not enough cookies', cookieType, user, cookie: cookieData[req.cookieType] })
   }
 });

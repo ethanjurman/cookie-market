@@ -16,6 +16,7 @@ async function postDataWithToken(url = "", data = {}) {
   const response = await fetch(url, {
     method: "POST",
     mode: "cors",
+    cache: "no-cache",
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
       "Content-Type": "application/json"
@@ -175,6 +176,7 @@ async function buildCookieButtons() {
       });
       localStorage.setItem('user', JSON.stringify(response.user));
       fillCookieWells();
+      buildAccountElement();
     }
     const sellButton = document.createElement("button");
     sellButton.classList.add('sell-button');
@@ -186,6 +188,7 @@ async function buildCookieButtons() {
       });
       localStorage.setItem('user', JSON.stringify(response.user));
       fillCookieWells();
+      buildAccountElement();
     }
     buttonContainer.appendChild(purchaseButton);
     buttonContainer.appendChild(sellButton);

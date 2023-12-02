@@ -37,6 +37,7 @@ h2 {
   grid-template-rows: 1fr 1fr 1fr;
   gap: 10px;
   justify-content: end;
+  margin-right: 10px;
 }
 
 .cookie-well {
@@ -53,15 +54,17 @@ h2 {
 .cookie-well-label {
   font-weight: bold;
   grid-area: header;
+  margin-top: 10px;
 }
 
 .cookie-well-price {
   font-weight: bold;
   background: #ffffff;
   border-radius: 10px;
-  margin: 0px 30px 0px 30px;
+  padding: 2px;
+  width: 100%;
   box-shadow: 3px 3px 0px #8c5a3c;
-  margin-top: 10px;
+  margin: 4px;
   grid-area: sidebar;
 }
 
@@ -197,8 +200,22 @@ button {
   background: #ffffff;
 }
 
+.sign-out {
+  border: 0px;
+  border-radius: 10px;
+  margin: 2px;
+  background: #ffffff;
+  min-width: 100px;
+}
+
 .crumb-value-section {
   grid-area: sidebar;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 2px;
+  width: 100%;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  margin: 4px;
 }
 
 .crumb {
@@ -208,6 +225,12 @@ button {
 
 .jar-section {
   grid-area: sidebar;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 2px;
+  width: 100%;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  margin: 4px;
 }
 
 .jar {
