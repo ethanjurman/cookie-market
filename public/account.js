@@ -37,6 +37,8 @@ function buildAccountElement() {
   crumbValue.innerText = user.crumbs;
 
   const accountSection = document.createElement('div');
+  userWrapper = document.createElement('div');
+  userWrapper.classList.add('user-wrapper')
   accountSection.classList.add('account-section');
   accountSection.appendChild(accountIconElement);
   accountSection.appendChild(accountUserNameElement);
@@ -45,8 +47,9 @@ function buildAccountElement() {
   crumbSection.appendChild(crumbImg);
   crumbSection.appendChild(crumbValue);
 
-  getAccountElement().appendChild(accountSection);
-  getAccountElement().appendChild(crumbSection);
+  userWrapper.appendChild(accountSection);
+  userWrapper.appendChild(crumbSection);
+  getAccountElement().appendChild(userWrapper);
 
   const signOutButton = document.createElement('button');
   signOutButton.classList.add('sign-out');

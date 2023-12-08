@@ -75,7 +75,8 @@ function getUserCookieDataElement(cookieType, price) {
 function buildCookieWell(data, cookieType) {
   const { label, imgSrc, price, previousPrice } = data;
   const cookieWell = document.createElement("div");
-  cookieWell.className = "cookie-well";
+  cookieWell.classList.add("cookie-well");
+  cookieWell.classList.add(cookieType);
   const labelElement = document.createElement("div");
   labelElement.classList.add('cookie-well-label')
   labelElement.innerHTML = label;
@@ -92,6 +93,7 @@ function buildCookieWell(data, cookieType) {
 
   const infoSection = document.createElement("div");
   infoSection.classList.add('info-section');
+  infoSection.classList.add(cookieType);
   infoSection.appendChild(priceElement);
   infoSection.appendChild(getUserCookieDataElement(cookieType, price));
   cookieWell.appendChild(labelElement);
@@ -100,12 +102,43 @@ function buildCookieWell(data, cookieType) {
   getCookieWells().appendChild(cookieWell);
 }
 
+function updateCookieWell(data, cookieType) {
+  const { price, previousPrice } = data;
+  const cookieWell = document.querySelector(`.cookie-well.${cookieType}`);
+  const priceElement = document.createElement("div");
+  priceElement.classList.add('cookie-well-price');
+  let trendIcon = `<span class="material-icons material-icons-outlined">trending_up</span>`
+  if (previousPrice > price) {
+    trendIcon = `<span class="material-icons material-icons-outlined">trending_down</span>`
+  }
+  priceElement.classList.add(previousPrice < price ? 'trending-up' : 'trending-down');
+  priceElement.innerHTML = `<span>${Math.round(price * 100) / 100}</span> ${trendIcon}`;
+
+  const info = document.querySelector(`.info-section.${cookieType}`)
+  info.parentElement.removeChild(info);
+
+  const infoSection = document.createElement("div");
+  infoSection.classList.add('info-section');
+  infoSection.classList.add(cookieType);
+  infoSection.appendChild(priceElement);
+  infoSection.appendChild(getUserCookieDataElement(cookieType, price));
+  cookieWell.appendChild(infoSection);
+}
+
 async function fillCookieWells() {
   const response = await fetch("/cookieData");
   const cookieData = await response.json()
   getCookieWells().innerHTML = "";
   Object.keys(cookieData).forEach(cookieKey => {
     buildCookieWell(cookieData[cookieKey], cookieKey);
+  });
+}
+
+async function updateCookieWells() {
+  const response = await fetch("/cookieData");
+  const cookieData = await response.json()
+  Object.keys(cookieData).forEach(cookieKey => {
+    updateCookieWell(cookieData[cookieKey], cookieKey);
   });
 }
 
@@ -164,6 +197,6 @@ async function buildCookieChart(cookieTypes) {
 })();
 
 setInterval(async () => {
-  await fillCookieWells()
+  await updateCookieWells()
   buildCookieChart(cookieKeys);
 }, 10000)

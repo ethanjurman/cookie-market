@@ -226,7 +226,6 @@ button {
   border-radius: 10px;
   margin: 4px 0px 0px 4px;
   background: #ffffff;
-  min-width: 100px;
   box-shadow: 1px 1px 0px #8c5a3c;
 }
 
@@ -272,4 +271,12 @@ button {
   box-shadow: 2px 2px 0px #666666;
   margin: 10px;
   cursor: initial;
+}
+
+.user-wrapper {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0px #8c5a3c;
+  padding-left: 8px;
+  width: 100px;
 }
